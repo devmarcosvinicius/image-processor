@@ -19,15 +19,18 @@ Salvar a matriz da imagem em um arquivo Excel.<br>
 
 <h2>Instalação ⚙️</h2>
 Clone o repositório em seu computador: <br>
+
 ```
 git clone https://github.com/devmarcosvinicius/image-processor.git
 ```
+
 <br>
 Mude o diretório de trabalho para image-processor: <br>
 
 ```
 cd image-processor
 ```
+
 <br>
 Instale os requisitos: <br>
 
