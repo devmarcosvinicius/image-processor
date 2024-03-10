@@ -1,6 +1,6 @@
 <h1 align="center">Image Processor</h1>
 
-<p align="center">Este projeto Python é um processador de imagem que pode extrair as cores e coordenadas de uma imagem e gerar um arquivo Excel com a matriz da imagem.</p>
+<p align="center">Este projeto Python é um processador de imagem que pode extrair as cores e coordenadas de uma imagem e gerar um arquivo Excel com a matriz da imagem.</p><br>
 
 <h2>Requisitos ☑️</h2>
 <p>
