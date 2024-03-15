@@ -16,9 +16,9 @@ def get_image_colors(image_path: str) -> dict:
             color = pixels[x, y]
 
             if color in colors_with_coordinates:
-                colors_with_coordinates[color]['coordinates'].append({'x': x, 'y': y})
+                colors_with_coordinates[color]['coordenadas'].append({'x': x, 'y': y})
             else:
-                colors_with_coordinates[color] = {'coordinates': [{'x': x, 'y': y}]}
+                colors_with_coordinates[color] = {'coordenadas': [{'x': x, 'y': y}]}
 
     return colors_with_coordinates
 

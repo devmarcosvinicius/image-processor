@@ -1,30 +1,33 @@
 import processing.matrix as matrix
-import utils.io as io
 import processing.combination as combination
+import processing.transformation as transformation
+import utils.io as io
 import utils.plot as plt
+import utils.validation as validation
 
 
-def menu() -> str:
+def main_menu() -> str:
     return """
 1. Gerar uma matriz em Excel de uma imagem.
 2. Cores da Imagem.
 3. Encontrar diferença entre duas imagens.
 4. Transferir histograma entre duas imagens.
-5. Mostrar Imagem
+5. Ajuste de Contraste
+6. Ajuste de Brilho
 0. Sair.
 """
 
 
 if __name__ == "__main__":
     while True:
-        print(menu())
+        print(main_menu())
         option = input("O que deseja fazer? ")
 
         match option:
             case "0":
                 break
             case "1":
-                image_path = input("Digite o caminho da imagem: ")
+                image_path = validation.get_image_path()
                 write_coordinates = input("Você gostaria de adicionar as coordenadas? (s/n): ").lower()
                 write_coordinates = True if write_coordinates == "s" else False
                 output_path = input("Digite o caminho com o nome do arquivo: (Ex. "
@@ -32,30 +35,42 @@ if __name__ == "__main__":
 
                 matrix.write_image_in_excel(image_path, output_path, write_coordinates)
                 print("O arquivo Excel foi gerado com sucesso.")
+
             case "2":
-                image_path = input("Digite o caminho da imagem: ")
-                print(matrix.get_image_colors(image_path))
+                image_path = validation.get_image_path()
+                colors = matrix.get_image_colors(image_path)
+
+                for name, coord in colors.items():
+                    print(f"cor {name}: {coord}")
+
             case "3":
-                image_path_1 = input("Digite o caminho da primeira imagem: ")
-                image_1 = io.imread(image_path_1)
+                image_1, image_2 = validation.get_images_path()
 
-                image_path_2 = input("Digite o caminho da segunda imagem: ")
-                image_2 = io.imread(image_path_2)
+                result, g1, g2 = combination.find_difference(image_1, image_2)
+                plt.plot_result(g1, g2, result)
 
-                result = combination.find_difference(image_1, image_2)
-                plt.plot_result(result)
             case "4":
-                image_path_1 = input("Digite o caminho da primeira imagem: ")
-                image_1 = io.imread(image_path_1)
-
-                image_path_2 = input("Digite o caminho da segunda imagem: ")
-                image_2 = io.imread(image_path_2)
+                image_1, image_2 = validation.get_images_path()
 
                 result = combination.transfer_histogram(image_1, image_2)
-                plt.plot_result(result)
+                plt.plot_result(image_1, image_2, result)
+
+            # Contraste
             case "5":
-                image_path_1 = input("Digite o caminho da primeira imagem: ")
-                image_1 = io.imread(image_path_1)
-                plt.plot_image(image_1)
+                image = validation.get_image_path()
+
+                contrast_level = validation.get_contrast_level()
+
+                image = transformation.change_contrast(image, contrast_level)
+                plt.plot_image(image)
+
+            case "6":
+                image = validation.get_image_path()
+                brightness_level = validation.get_brightness_level()
+
+                image = transformation.change_brightness(image, brightness_level)
+
+                plt.plot_image(image)
+
             case _:
                 print("Opção invalida. Tente novamente.")
