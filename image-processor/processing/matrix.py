@@ -11,14 +11,28 @@ def get_image_colors(image_path: str) -> dict:
     pixels = image.load()
     colors_with_coordinates = {}
 
-    for y in range(height):
-        for x in range(width):
-            color = pixels[x, y]
+    # Checks if it is RGBA
+    if image.mode == 'RGBA':
+        for y in range(height):
+            for x in range(width):
+                color = pixels[x, y]
+                rgba_color = color + (pixels[x, y][3],)
 
-            if color in colors_with_coordinates:
-                colors_with_coordinates[color]['coordenadas'].append({'x': x, 'y': y})
-            else:
-                colors_with_coordinates[color] = {'coordenadas': [{'x': x, 'y': y}]}
+                if rgba_color in colors_with_coordinates:
+                    colors_with_coordinates[rgba_color]['coordenadas'].append({'x': x, 'y': y})
+                else:
+                    colors_with_coordinates[rgba_color] = {'coordenadas': [{'x': x, 'y': y}]}
+
+    # Checks if it is RGB
+    else:
+        for y in range(height):
+            for x in range(width):
+                color = pixels[x, y]
+
+                if color in colors_with_coordinates:
+                    colors_with_coordinates[color]['coordenadas'].append({'x': x, 'y': y})
+                else:
+                    colors_with_coordinates[color] = {'coordenadas': [{'x': x, 'y': y}]}
 
     return colors_with_coordinates
 
