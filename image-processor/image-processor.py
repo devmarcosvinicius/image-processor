@@ -36,7 +36,7 @@ if __name__ == "__main__":
                 output_path = input("Digite o caminho com o nome do arquivo: (Ex. "
                                     "C:\\Users\\User\\Images\\Imagem-em-exel)") + ".xlsx"
 
-                matrix.write_image_in_excel(image_path, output_path, write_coordinates)
+                matrix.write_image_in_excel(image, output_path, write_coordinates)
                 print("O arquivo Excel foi gerado com sucesso.")
 
             case "2":

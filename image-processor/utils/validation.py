@@ -21,9 +21,9 @@ def get_image_path():
     while not is_valid_image_path(image_path):
         image_path = input("Caminho inválido. Digite novamente o caminho da primeira imagem: ")
 
-    image = imread(image_path)
+    # image = imread(image_path)
 
-    return image
+    return image_path
 
 
 def get_images_path():
@@ -31,15 +31,15 @@ def get_images_path():
     while not is_valid_image_path(image_path_1):
         image_path_1 = input("Caminho inválido. Digite novamente o caminho da primeira imagem: ")
 
-    image_1 = imread(image_path_1)
+    # image_1 = imread(image_path_1)
 
     image_path_2 = input("Digite o caminho da segunda imagem: ")
     while not is_valid_image_path(image_path_2):
         image_path_2 = input("Caminho inválido. Digite novamente o caminho da segunda imagem: ")
 
-    image_2 = imread(image_path_2)
+    # image_2 = imread(image_path_2)
 
-    return image_1, image_2
+    return image_path_1, image_path_2
 
 
 def is_valid_contrast_level(factor: float) -> bool:
