@@ -4,10 +4,11 @@
 
 <h2>Requisitos ☑️</h2>
 <p>
-Python 3.7 ou superior<br>
+Python 3.12 ou superior<br>
 OpenCV-Python 4.5.3.56 ou superior<br>
 NumPy 1.21.2 ou superior<br>
 Openpyxl 3.0.9 ou superior<br>
+Scikit-Image 0.22.0 ou superior<br>
 </p>
 
 <h2>Recursos ✨</h2>
