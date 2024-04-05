@@ -9,16 +9,8 @@ def rescale_image(image, proportion):
     return rescale(image, proportion)
 
 
-def resize_image(image, new_size: str):
-    # assert 0 <= proportion <= 1, "Specify a valid proportion between 0 and 1."
-    height, width = map(str.strip, new_size.split(","))
-    height = float(height)
-    width = float(width)
-
-    new_size = tuple(new_size)
-    new_size = (height, width)
-
-    return resize(image, new_size)
+def resize_image(image, new_height, new_width):
+    return resize(image, (new_height, new_width), anti_aliasing=True)
 
 
 def flip_image_horizontally(image):
