@@ -2,6 +2,7 @@ import processing.matrix as matrix
 import processing.combination as combination
 import processing.transformation as transformation
 import utils.plot as plt
+import utils.io as io
 import utils.validation as validation
 
 
@@ -23,16 +24,18 @@ def main_menu() -> str:
 
 
 if __name__ == "__main__":
+    image = None
     while True:
         print(main_menu())
         option = input("O que deseja fazer?\n")
-        image = any
 
         match option:
             case "0":
                 break
             case "1":
                 image = validation.get_image_path()
+                image = io.read_image(image)
+
                 write_coordinates = input("Você gostaria de adicionar as coordenadas? (s/n):\n").lower()
                 write_coordinates = True if write_coordinates == "s" else False
                 output_path = input("Digite o caminho com o nome do arquivo: (Ex. "
@@ -43,6 +46,8 @@ if __name__ == "__main__":
 
             case "2":
                 image = validation.get_image_path()
+                image = io.read_image(image)
+
                 colors = matrix.get_image_colors(image)
 
                 for name, coord in colors.items():
@@ -53,12 +58,16 @@ cor {name}:
 
             case "3":
                 image_1, image_2 = validation.get_images_path()
+                image_1 = io.read_image(image_1)
+                image_2 = io.read_image(image_2)
 
                 result, g1, g2 = combination.find_difference(image_1, image_2)
                 plt.plot_result(g1, g2, result)
 
             case "4":
                 image_1, image_2 = validation.get_images_path()
+                image_1 = io.read_image(image_1)
+                image_2 = io.read_image(image_2)
 
                 result = combination.transfer_histogram(image_1, image_2)
                 plt.plot_result(image_1, image_2, result)
@@ -66,7 +75,7 @@ cor {name}:
             # Contraste
             case "5":
                 image = validation.get_image_path()
-
+                image = io.read_image(image)
                 contrast_level = validation.get_contrast_level()
 
                 image = transformation.change_contrast(image, contrast_level)
@@ -74,6 +83,7 @@ cor {name}:
 
             case "6":
                 image = validation.get_image_path()
+                image = io.read_image(image)
                 brightness_level = validation.get_brightness_level()
 
                 image = transformation.change_brightness(image, brightness_level)
@@ -82,6 +92,7 @@ cor {name}:
 
             case "7":
                 image = validation.get_image_path()
+                image = io.read_image(image)
                 side = input("Você gostaria de inverter no eixo horizontal ou vertical? (h/v)").lower()
                 result = any
 
@@ -96,15 +107,19 @@ cor {name}:
 
             case "8":
                 image = validation.get_image_path()
+                image = io.read_image(image)
                 result = transformation.mirror_image(image)
 
                 plt.plot_image(result)
 
             case "9":
                 image = validation.get_image_path()
-                new_size = input("Digite o novo tamanho que deseja da imagem: (Altura, Largura Ex.: 100, 150) ")
+                image = io.read_image(image)
+                new_height, new_width = input("Digite o novo tamanho que deseja da imagem: (Altura, Largura Ex.: 100, 150) ").split(',')
+                new_height = int(new_height)
+                new_width = int(new_width)
 
-                result = transformation.resize_image(image, new_size)
+                result = transformation.resize_image(image, new_height, new_width)
 
                 plt.plot_image(result)
 
