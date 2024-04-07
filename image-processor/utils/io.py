@@ -1,8 +1,8 @@
 from skimage.io import imread, imsave
 
 
-def read_image(image, is_gray=False):
-    image = imread(image, as_grey=is_gray)
+def read_image(image):
+    image = imread(image)
     return image
 
 
