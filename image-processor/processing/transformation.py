@@ -9,7 +9,7 @@ def rescale_image(image, proportion):
     return rescale(image, proportion)
 
 
-def resize_image(image, new_height, new_width):
+def resize_image(image, new_height: int, new_width: int):
     return resize(image, (new_height, new_width), anti_aliasing=True)
 
 
@@ -25,6 +25,11 @@ def mirror_image(image):
     flipped_image = flip_image_horizontally(image)
 
     return numpy.hstack([image, flipped_image])
+
+
+# TODO
+def move_image(image):
+    pass
 
 
 def change_contrast(image, contrast_level):
