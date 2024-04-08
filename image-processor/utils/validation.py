@@ -17,9 +17,9 @@ def is_valid_image_path(image_path: str) -> bool:
 
 
 def get_image_path():
-    image_path = input("Digite o caminho da imagem: ")
+    image_path = input("Digite o caminho da imagem:\n")
     while not is_valid_image_path(image_path):
-        image_path = input("Caminho inválido. Digite novamente o caminho da primeira imagem: ")
+        image_path = input("Caminho inválido. Digite novamente o caminho da primeira imagem:\n")
 
     # image = imread(image_path)
 
@@ -27,15 +27,15 @@ def get_image_path():
 
 
 def get_images_path():
-    image_path_1 = input("Digite o caminho da primeira imagem: ")
+    image_path_1 = input("Digite o caminho da primeira imagem:\n")
     while not is_valid_image_path(image_path_1):
-        image_path_1 = input("Caminho inválido. Digite novamente o caminho da primeira imagem: ")
+        image_path_1 = input("Caminho inválido. Digite novamente o caminho da primeira imagem:\n")
 
     # image_1 = imread(image_path_1)
 
-    image_path_2 = input("Digite o caminho da segunda imagem: ")
+    image_path_2 = input("Digite o caminho da segunda imagem:\n")
     while not is_valid_image_path(image_path_2):
-        image_path_2 = input("Caminho inválido. Digite novamente o caminho da segunda imagem: ")
+        image_path_2 = input("Caminho inválido. Digite novamente o caminho da segunda imagem:\n")
 
     # image_2 = imread(image_path_2)
 

@@ -3,15 +3,13 @@ import openpyxl
 from openpyxl.styles import PatternFill
 
 
-def get_image_colors(image_path: str) -> dict:
-    image = Image.open(image_path)
-
+def get_image_colors(image: Image) -> dict:
     width, height = image.size
 
     pixels = image.load()
     colors_with_coordinates = {}
 
-    # Checks if it is RGBA
+    # Verify RGBA.
     if image.mode == 'RGBA':
         for y in range(height):
             for x in range(width):
@@ -23,7 +21,7 @@ def get_image_colors(image_path: str) -> dict:
                 else:
                     colors_with_coordinates[rgba_color] = {'coordenadas': [{'x': x, 'y': y}]}
 
-    # Checks if it is RGB
+    # Verify RGB.
     else:
         for y in range(height):
             for x in range(width):
@@ -37,8 +35,7 @@ def get_image_colors(image_path: str) -> dict:
     return colors_with_coordinates
 
 
-def write_image_in_excel(image_path: str, output_path: str, coordinates: bool):
-    image = Image.open(image_path)
+def write_image_in_excel(image: Image, output_path: str, coordinates: bool):
     image = image.convert('RGBA')
     width, height = image.size
 

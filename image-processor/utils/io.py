@@ -1,10 +1,10 @@
 from skimage.io import imread, imsave
 
 
-def read_image(path: str, is_gray=False):
-    image = imread(path, as_grey=is_gray)
+def read_image(image):
+    image = imread(image)
     return image
 
 
-def save_image(path, image):
-    imsave(path, image)
+def save_image(output, image):
+    imsave(output, image, format='PNG')
