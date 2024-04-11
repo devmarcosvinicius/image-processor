@@ -1,15 +1,16 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QFileDialog, QMessageBox, \
-    QGridLayout, QInputDialog, QLineEdit, QSlider, QDialog
+    QGridLayout, QInputDialog
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 
 from PIL import Image
 
+from skimage.io import imread
+
 from processing import matrix
 from processing import transformation
 from utils import io
-from utils import plot as plt
 
 
 class ImageLoader(QWidget):
@@ -40,7 +41,8 @@ class ImageLoader(QWidget):
             'exchange_histogram_between_images': QPushButton('Transferir histograma', self),
             'change_contrast': QPushButton('Ajuste de Contraste', self),
             'change_brightness': QPushButton('Ajuste de Brilho', self),
-            'invert_side': QPushButton('Inverter lado', self),
+            'flip_image_horizontally': QPushButton('Girar Imagem na Horizontal', self),
+            'flip_image_vertically': QPushButton('Girar Imagem na Vertical', self),
             'mirror_image': QPushButton('Espelhar imagem', self),
             'resize': QPushButton('Resize', self),
             'leave': QPushButton('Sair', self)
@@ -61,15 +63,30 @@ class ImageLoader(QWidget):
         grid_layout.addWidget(self.button_options['change_brightness'], 1, 1)
         grid_layout.addWidget(self.button_options['images_differences'], 0, 2)
         grid_layout.addWidget(self.button_options['exchange_histogram_between_images'], 1, 2)
-        grid_layout.addWidget(self.button_options['invert_side'], 0, 3)
-        grid_layout.addWidget(self.button_options['mirror_image'], 1, 3)
-        grid_layout.addWidget(self.button_options['resize'], 2, 3)
+        grid_layout.addWidget(self.button_options['mirror_image'], 0, 3)
+        grid_layout.addWidget(self.button_options['flip_image_horizontally'], 1, 3)
+        grid_layout.addWidget(self.button_options['flip_image_vertically'], 2, 3)
+        grid_layout.addWidget(self.button_options['resize'], 3, 3)
 
         layout.addLayout(grid_layout)
         layout.addWidget(self.button_options['leave'])
 
         self.setLayout(layout)
         self.loaded_image = None
+
+        if not self.reload_image():
+            self.button_load.show()
+
+    def reload_image(self):
+        if self.loaded_image_path is not None:
+            pixmap = QPixmap(self.loaded_image_path)
+            if not pixmap.isNull():
+                self.loaded_image = io.read_image(self.loaded_image_path)
+                self.label.setPixmap(pixmap.scaled(self.label.size(), Qt.KeepAspectRatio))
+                for button in self.button_options.values():
+                    button.setVisible(True)
+                return True
+        return False
 
     def load_image(self):
         file_dialog = QFileDialog(self)
@@ -82,16 +99,13 @@ class ImageLoader(QWidget):
             pixmap = QPixmap(file_path)
             if not pixmap.isNull():
                 self.loaded_image_path = file_path  # Save the file path
-                self.loaded_image = io.read_image(self.loaded_image_path)  # Open the image with Pillow
+                self.loaded_image = imread(self.loaded_image_path)  # Open the image with Pillow
                 self.label.setPixmap(pixmap.scaled(self.label.size(), Qt.KeepAspectRatio))
                 self.button_load.hide()
                 for button in self.button_options.values():
                     button.setVisible(True)
             else:
                 self.label.setText('Arquivo Invalido.')
-
-    def update_image(self):
-        self.loaded_image = io.read_image(self.loaded_image_path)
 
     def on_option_clicked(self, option):
         match option:
@@ -108,7 +122,8 @@ class ImageLoader(QWidget):
                                                    QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
                 show_coordinates = coordinates == QMessageBox.Yes
-                output_file_path, _ = QFileDialog.getSaveFileName(self, 'Salvar Matriz no Arquivo Excel', '', 'Excel files (*.xlsx)')
+                output_file_path, _ = QFileDialog.getSaveFileName(self, 'Salvar Matriz no Arquivo Excel', '',
+                                                                  'Excel files (*.xlsx)')
 
                 if output_file_path:
                     matrix.write_image_in_excel(self.loaded_image, output_file_path, show_coordinates)
@@ -117,22 +132,36 @@ class ImageLoader(QWidget):
             case "image_colors":
                 return
 
-            case "mirror_image":
-                if self.loaded_image is None:
-                    QMessageBox.warning(self, 'Option Clicked', 'No image loaded.')
-                    return
-
-                contrast, ok = QInputDialog.getText(self, 'Contraste', 'Digite o valor do contraste:', QLineEdit.Normal)
-
+            case "change_contrast":
+                value, ok = QInputDialog.getDouble(self, 'Ajuste de Contraste', 'Digite o valor de contraste:', 0.0,
+                                                   0.0)
                 if ok:
-                    contrast_value = float(contrast)
+                    result = transformation.change_contrast(self.loaded_image, value)
+                    result_pixmap = io.image_to_qpixmap(result)
+                    self.label.setPixmap(result_pixmap.scaled(self.label.size(), Qt.KeepAspectRatio))
 
-                    if contrast_value < 0 or contrast_value > 100:
-                        QMessageBox.warning(self, 'Contraste inválido.', 'O contraste deve ser entre 0.0 e 100.')
-                        return
+            case "change_brightness":
+                value, ok = QInputDialog.getDouble(self, 'Ajuste de Brilho', 'Digite o valor de brilho:', 0.0,
+                                                   0.0)
+                if ok:
+                    result = transformation.change_brightness(self.loaded_image, value)
+                    result_pixmap = io.image_to_qpixmap(result)
+                    self.label.setPixmap(result_pixmap.scaled(self.label.size(), Qt.KeepAspectRatio))
 
-                self.loaded_image = transformation.mirror_image(image=self.loaded_image)
-                # self.update_image()
+            case "mirror_image":
+                result = transformation.mirror_image(self.loaded_image)
+                result_pixmap = io.image_to_qpixmap(result)
+                self.label.setPixmap(result_pixmap.scaled(self.label.size(), Qt.KeepAspectRatio))
+
+            case "flip_image_horizontally":
+                result = transformation.flip_image_horizontally(self.loaded_image)
+                result_pixmap = io.image_to_qpixmap(result)
+                self.label.setPixmap(result_pixmap.scaled(self.label.size(), Qt.KeepAspectRatio))
+
+            case "flip_image_vertically":
+                result = transformation.flip_image_vertically(self.loaded_image)
+                result_pixmap = io.image_to_qpixmap(result)
+                self.label.setPixmap(result_pixmap.scaled(self.label.size(), Qt.KeepAspectRatio))
 
 
 if __name__ == '__main__':
