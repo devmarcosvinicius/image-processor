@@ -4,12 +4,20 @@ from openpyxl.styles import PatternFill
 
 
 def get_image_colors(image: Image) -> dict:
-    width, height = image.size
+    """
+    Retorna um dicionário com as cores presentes na imagem e suas coordenadas.
 
+    Parâmetros:
+    image (PIL.Image): A imagem a ser processada.
+
+    Retorna:
+    dict: Um dicionário onde as chaves são as cores encontradas na imagem e os valores são listas de coordenadas (x, y) onde essas cores ocorrem.
+    """
+    width, height = image.size
     pixels = image.load()
     colors_with_coordinates = {}
 
-    # Verify RGBA.
+    # Verifica RGBA.
     if image.mode == 'RGBA':
         for y in range(height):
             for x in range(width):
@@ -21,7 +29,7 @@ def get_image_colors(image: Image) -> dict:
                 else:
                     colors_with_coordinates[rgba_color] = {'coordenadas': [{'x': x, 'y': y}]}
 
-    # Verify RGB.
+    # Verifica RGB.
     else:
         for y in range(height):
             for x in range(width):
@@ -35,7 +43,18 @@ def get_image_colors(image: Image) -> dict:
     return colors_with_coordinates
 
 
-def write_image_in_excel(image: Image, output_path: str, coordinates: bool):
+def write_image_in_excel(image: Image, output_path: str, coordinates: bool) -> None:
+    """
+    Escreve a imagem em um arquivo Excel, com a opção de incluir as coordenadas das cores.
+
+    Parâmetros:
+    image (PIL.Image): A imagem a ser escrita.
+    output_path (str): O caminho do arquivo Excel de saída.
+    coordinates (bool): Se True, as coordenadas das cores serão incluídas no arquivo Excel.
+
+    Retorna:
+    None
+    """
     image = image.convert('RGBA')
     width, height = image.size
 
@@ -46,6 +65,7 @@ def write_image_in_excel(image: Image, output_path: str, coordinates: bool):
         for x in range(width):
             color = image.getpixel((x, y))
 
+            # Substitui o preto pelo branco para melhor visualização.
             if color[:3] == (0, 0, 0):
                 color = (255, 255, 255, 255)
 
