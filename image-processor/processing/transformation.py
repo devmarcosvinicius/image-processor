@@ -1,8 +1,10 @@
-import numpy
+import numpy as np
 from skimage.transform import resize
 from skimage.transform import rescale
 from skimage import exposure
 from skimage import util
+
+import utils.io
 
 
 def rescale_image(image, proportion):
@@ -34,7 +36,7 @@ def resize_image(image, new_height: int, new_width: int):
     return resize(image, (new_height, new_width), anti_aliasing=True)
 
 
-def flip_image_horizontally(image):
+def flip_image_horizontally(image: np.ndarray) -> np.ndarray:
     """
     Espelha a imagem horizontalmente.
 
@@ -44,10 +46,10 @@ def flip_image_horizontally(image):
     Retorna:
     numpy.ndarray: A imagem espelhada horizontalmente.
     """
-    return image[:, ::-1, ...]
+    return np.array(image[:, ::-1, ...])
 
 
-def flip_image_vertically(image):
+def flip_image_vertically(image: np.ndarray) -> np.ndarray:
     """
     Espelha a imagem verticalmente.
 
@@ -57,10 +59,10 @@ def flip_image_vertically(image):
     Retorna:
     numpy.ndarray: A imagem espelhada verticalmente.
     """
-    return image[::-1, :, ...]
+    return np.array(image[::-1, :, ...])
 
 
-def mirror_image(image):
+def mirror_image(image: np.ndarray) -> np.ndarray:
     """
     Cria uma imagem espelhada horizontalmente, concatenando a imagem original com sua versão espelhada.
 
@@ -71,10 +73,10 @@ def mirror_image(image):
     numpy.ndarray: A imagem original concatenada com sua versão espelhada.
     """
     flipped_image = flip_image_horizontally(image)
-    return numpy.hstack([image, flipped_image])
+    return np.hstack([image, flipped_image])
 
 
-def move_image(image):
+def move_image(image: np.ndarray) -> np.ndarray:
     """
     Move a imagem (ainda não implementado).
 
@@ -87,7 +89,7 @@ def move_image(image):
     pass
 
 
-def change_contrast(image, contrast_level):
+def change_contrast(image: np.ndarray, contrast_level: float) -> np.ndarray:
     """
     Altera o contraste da imagem.
 
