@@ -33,7 +33,7 @@ def resize_image(image, new_height: int, new_width: int):
     Retorna:
     numpy.ndarray: A imagem redimensionada.
     """
-    return resize(image, (new_height, new_width), anti_aliasing=True)
+    return np.array(resize(image, (new_height, new_width), anti_aliasing=True))
 
 
 def flip_image_horizontally(image: np.ndarray) -> np.ndarray:
@@ -117,4 +117,4 @@ def change_brightness(image, brightness_level):
     image_float = util.img_as_float(image)
     adjusted_image = image_float * brightness_level
 
-    return exposure.adjust_gamma(adjusted_image)
+    return exposure.adjust_gamma(adjusted_image, gamma=brightness_level)
