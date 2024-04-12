@@ -78,8 +78,22 @@ class MyGUI(QMainWindow):
         if self.loaded_image is None:
             QMessageBox.warning(self, 'Option Clicked', 'A imagem não foi carregada.')
             return
-        # Adicione aqui a lógica para obter as cores da imagem
-        pass
+
+        dicionario = matrix.get_image_colors(self.loaded_image)
+
+        file_dialog = QFileDialog(self)
+        file_dialog.setWindowTitle('Salvar Cores')
+        file_dialog.setAcceptMode(QFileDialog.AcceptSave)
+        file_dialog.setNameFilter('Text files (*.txt)')
+        file_dialog.setDefaultSuffix('txt')
+
+        if file_dialog.exec_():
+            file_path = file_dialog.selectedFiles()[0]
+            with open(file_path, 'w') as f:
+                for key, value in dicionario.items():
+                    f.write(f"{key}: {value}\n")
+
+            QMessageBox.warning(self, 'Sucesso', 'Cores salvas com sucesso.')
 
     def adjust_contrast(self):
         if self.loaded_image is None:
@@ -142,8 +156,17 @@ class MyGUI(QMainWindow):
         if self.loaded_image is None:
             QMessageBox.warning(self, 'Option Clicked', 'A imagem não foi carregada.')
             return
-        # Adicione aqui a lógica para salvar a imagem
-        pass
+
+        file_dialog = QFileDialog(self)
+        file_dialog.setWindowTitle('Salvar Imagem')
+        file_dialog.setAcceptMode(QFileDialog.AcceptSave)
+        file_dialog.setNameFilter('Images (*.png *.jpg *.bmp)')
+        file_dialog.setDefaultSuffix('png')
+
+        if file_dialog.exec_():
+            file_path = file_dialog.selectedFiles()[0]
+            io.save_image(file_path, self.loaded_image)
+            QMessageBox.warning(self, 'Sucesso', 'Imagem salva com sucesso.')
 
 
 def main():
