@@ -1,4 +1,4 @@
-import numpy
+
 import numpy as np
 from skimage.io import imread, imsave
 from PyQt5.QtGui import QPixmap, QImage
@@ -32,6 +32,19 @@ def save_image(output, image):
     imsave(output, image, format='PNG')
 
 
+def rgba_to_rgb(image: np.ndarray) -> np.ndarray:
+    """
+    Converte uma imagem no formato RGBA para RGB.
+
+    Parâmetros:
+    image (numpy.ndarray): A imagem RGBA a ser convertida.
+
+    Retorna:
+    numpy.ndarray: A imagem convertida para RGB.
+    """
+    return image[:, :, :3]  # Mantém apenas os canais RGB
+
+
 def image_to_qpixmap(image: np.ndarray) -> QPixmap:
     """
     Converte uma imagem no formato numpy.ndarray para QPixmap.
@@ -42,34 +55,22 @@ def image_to_qpixmap(image: np.ndarray) -> QPixmap:
     Retorna:
     QPixmap: A imagem convertida para QPixmap.
     """
-    if image.dtype != np.uint8:
-        image = (image * 255).astype(np.uint8)  # Convert float image to uint8
+    # Normalizar os valores de pixel para o intervalo [0, 255]
+    image_normalized = (image - np.min(image)) * (255.0 / (np.max(image) - np.min(image)))
+    image_normalized = image_normalized.astype(np.uint8)
 
-    if len(image.shape) == 3:
-        if image.shape[2] == 3:
-            format = QImage.Format_RGB888
-        elif image.shape[2] == 4:
-            format = QImage.Format_RGBA8888
+    if len(image_normalized.shape) == 3:
+        if image_normalized.shape[2] == 3:
+            qformat = QImage.Format_RGB888
+        elif image_normalized.shape[2] == 4:
+            qformat = QImage.Format_RGBA8888
     else:
-        format = QImage.Format_Grayscale8
+        qformat = QImage.Format_Grayscale8
 
-    height, width, channels = image.shape
+    height, width, channels = image_normalized.shape
     bytes_per_line = channels * width
-    qimage = QImage(image.data, width, height, bytes_per_line, format)
+    qimage = QImage(image_normalized.data, width, height, bytes_per_line, qformat)
     qpixmap = QPixmap.fromImage(qimage.rgbSwapped())  # Use rgbSwapped() to handle image correctly
     return qpixmap
 
 
-def qpixmap_to_image(image: QPixmap) -> np.ndarray:
-    """
-    Converte um QPixmap em uma imagem numpy.ndarray.
-
-    Parâmetros:
-    qpixmap (QPixmap): O QPixmap a ser convertido.
-
-    Retorna:
-    numpy.ndarray: A imagem convertida como um array numpy.
-    """
-    image = image.toImage()
-    image = np.frombuffer(image.constBits(), dtype=np.uint8).reshape(image.height(), image.width(), 4)
-    return image.copy()

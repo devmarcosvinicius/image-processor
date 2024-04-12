@@ -1,127 +1,156 @@
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
+from PyQt5 import uic
+
+from PIL import Image
+
 import processing.matrix as matrix
-import processing.combination as combination
 import processing.transformation as transformation
-import utils.plot as plt
 import utils.io as io
-import utils.validation as validation
 
 
-def main_menu() -> str:
-    return """
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
--   
-= 1. Gerar uma matriz em Excel de uma imagem.
-- 2. Cores da Imagem.
-= 3. Encontrar diferença entre duas imagens.
-- 4. Transferir histograma entre duas imagens.
-= 5. Ajuste de Contraste
-- 6. Ajuste de Brilho
-= 7. Inverter lado
-- 8. Espelhar imagem
-= 9. Resize
-- 0. Sair.
-"""
+class MyGUI(QMainWindow):
+    def __init__(self):
+        super(MyGUI, self).__init__()
+        self.loaded_image_path = None
+        self.loaded_image = None
+        uic.loadUi("form.ui", self)
+
+        # Conectar os botões aos métodos correspondentes
+        self.matrix_button.clicked.connect(self.generate_excel_matrix)
+        self.matrix_colors_button.clicked.connect(self.get_image_colors)
+        self.contrast_button.clicked.connect(self.adjust_contrast)
+        self.brightness_button.clicked.connect(self.adjust_brightness)
+        self.mirror_button.clicked.connect(self.mirror_image)
+        self.rotate_horizontally_button.clicked.connect(self.rotate_horizontally)
+        self.rotate_vertically_button.clicked.connect(self.rotate_vertically)
+        self.scale_button.clicked.connect(self.change_scale)
+        self.save_button.clicked.connect(self.save_image)
+        self.load_image_button.clicked.connect(self.load_image)
+        self.leave_button.clicked.connect(self.close)
+
+        self.show()
+
+    def load_image(self):
+        file_dialog = QFileDialog(self)
+        file_dialog.setWindowTitle('Abrir Imagem')
+        file_dialog.setNameFilter('Images (*.png *.jpg *.bmp)')
+        file_dialog.setFileMode(QFileDialog.ExistingFile)
+
+        if file_dialog.exec_():
+            file_path = file_dialog.selectedFiles()[0]
+            pixmap = QPixmap(file_path)
+            self.loaded_image = pixmap
+            if not pixmap.isNull():
+                self.loaded_image_path = file_path  # Save the file path
+                self.loaded_image = io.read_image(self.loaded_image_path)  # Open the image with Pillow
+                self.display_image(pixmap)  # Display the image in the QLabel
+            else:
+                QMessageBox.warning(self, 'Option Clicked', 'Arquivo invalido.')
+                return
+
+    def display_image(self, pixmap):
+        # Remove any existing image from the QLabel
+        self.image_label.clear()
+        # Set the pixmap as the image in the QLabel
+        self.image_label.setPixmap(pixmap.scaled(self.image_label.size(), Qt.KeepAspectRatio))
+
+    def generate_excel_matrix(self):
+        if self.loaded_image is None:
+            QMessageBox.warning(self, 'Option Clicked', 'A imagem não foi carregada.')
+            return
+
+        self.loaded_image = Image.open(self.loaded_image_path)
+        coordinates = QMessageBox.question(self, 'Coordenadas', 'Você deseja mostrar as coordenadas das cores '
+                                                                'na matriz?',
+                                           QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+        show_coordinates = coordinates == QMessageBox.Yes
+        output_file_path, _ = QFileDialog.getSaveFileName(self, 'Salvar Matriz no Arquivo Excel', '',
+                                                          'Excel files (*.xlsx)')
+
+        if output_file_path:
+            matrix.write_image_in_excel(self.loaded_image, output_file_path, show_coordinates)
+            QMessageBox.warning(self, 'Sucesso', 'Matriz gerada em um arquivo Excel.')
+
+    def get_image_colors(self):
+        if self.loaded_image is None:
+            QMessageBox.warning(self, 'Option Clicked', 'A imagem não foi carregada.')
+            return
+        # Adicione aqui a lógica para obter as cores da imagem
+        pass
+
+    def adjust_contrast(self):
+        if self.loaded_image is None:
+            QMessageBox.warning(self, 'Option Clicked', 'A imagem não foi carregada.')
+            return
+
+        value, ok = QInputDialog.getDouble(self, 'Ajuste de Contraste', 'Digite o valor de contraste:', 0.0, 0.0)
+        if ok:
+            self.loaded_image = transformation.change_contrast(self.loaded_image, value)
+            result_pixmap = io.image_to_qpixmap(self.loaded_image)
+            self.display_image(result_pixmap)
+
+    def adjust_brightness(self):
+        if self.loaded_image is None:
+            QMessageBox.warning(self, 'Option Clicked', 'A imagem não foi carregada.')
+            return
+
+        value, ok = QInputDialog.getDouble(self, 'Ajuste de Contraste', 'Digite o valor do brilho:', 0.0, 0.0)
+        if ok:
+            self.loaded_image = transformation.change_brightness(self.loaded_image, value)
+            result_pixmap = io.image_to_qpixmap(self.loaded_image)
+            self.display_image(result_pixmap)
+
+    def mirror_image(self):
+        if self.loaded_image is None:
+            QMessageBox.warning(self, 'Option Clicked', 'A imagem não foi carregada.')
+            return
+        self.loaded_image = transformation.mirror_image(self.loaded_image)
+        result_pixmap = io.image_to_qpixmap(self.loaded_image)
+        self.display_image(result_pixmap)
+
+    def rotate_horizontally(self):
+        if self.loaded_image is None:
+            QMessageBox.warning(self, 'Option Clicked', 'A imagem não foi carregada.')
+            return
+        self.loaded_image = transformation.flip_image_horizontally(self.loaded_image)
+        result_pixmap = io.image_to_qpixmap(self.loaded_image)
+        self.display_image(result_pixmap)
+
+    def rotate_vertically(self):
+        if self.loaded_image is None:
+            QMessageBox.warning(self, 'Option Clicked', 'A imagem não foi carregada.')
+            return
+        self.loaded_image = transformation.flip_image_vertically(self.loaded_image)
+        result_pixmap = io.image_to_qpixmap(self.loaded_image)
+        self.display_image(result_pixmap)
+
+    def change_scale(self):
+        if self.loaded_image is None:
+            QMessageBox.warning(self, 'Option Clicked', 'A imagem não foi carregada.')
+            return
+
+        value, ok = QInputDialog.getDouble(self, 'Ajuste de Contraste', 'Digite o valor da escala:', 0.0, 0.0)
+        if ok:
+            self.loaded_image = transformation.rescale_image(self.loaded_image, value)
+            # result_pixmap = io.image_to_qpixmap(self.loaded_image)
+            self.display_image(self.loaded_image)
+
+    def save_image(self):
+        if self.loaded_image is None:
+            QMessageBox.warning(self, 'Option Clicked', 'A imagem não foi carregada.')
+            return
+        # Adicione aqui a lógica para salvar a imagem
+        pass
 
 
-if __name__ == "__main__":
-    image = None
-    while True:
-        print(main_menu())
-        option = input("O que deseja fazer?\n")
+def main():
+    app = QApplication([])
+    window = MyGUI()
+    app.exec_()
 
-        match option:
-            case "0":
-                break
-            case "1":
-                image = validation.get_image_path()
-                image = io.read_image(image)
 
-                write_coordinates = input("Você gostaria de adicionar as coordenadas? (s/n):\n").lower()
-                write_coordinates = True if write_coordinates == "s" else False
-                output_path = input("Digite o caminho com o nome do arquivo: (Ex. "
-                                    "C:\\Users\\User\\Images\\Imagem-em-exel)\n") + ".xlsx"
-
-                matrix.write_image_in_excel(image, output_path, write_coordinates)
-                print("O arquivo Excel foi gerado com sucesso.")
-
-            case "2":
-                image = validation.get_image_path()
-                image = io.read_image(image)
-
-                colors = matrix.get_image_colors(image)
-
-                for name, coord in colors.items():
-                    print(f"""
-cor {name}: 
-    {coord}
-""")
-
-            case "3":
-                image_1, image_2 = validation.get_images_path()
-                image_1 = io.read_image(image_1)
-                image_2 = io.read_image(image_2)
-
-                result, g1, g2 = combination.find_difference(image_1, image_2)
-                plt.plot_result(g1, g2, result)
-
-            case "4":
-                image_1, image_2 = validation.get_images_path()
-                image_1 = io.read_image(image_1)
-                image_2 = io.read_image(image_2)
-
-                result = combination.transfer_histogram(image_1, image_2)
-                plt.plot_result(image_1, image_2, result)
-
-            # Contraste
-            case "5":
-                image = validation.get_image_path()
-                image = io.read_image(image)
-                contrast_level = validation.get_contrast_level()
-
-                image = transformation.change_contrast(image, contrast_level)
-                plt.plot_image(image)
-
-            case "6":
-                image = validation.get_image_path()
-                image = io.read_image(image)
-                brightness_level = validation.get_brightness_level()
-
-                image = transformation.change_brightness(image, brightness_level)
-
-                plt.plot_image(image)
-
-            case "7":
-                image = validation.get_image_path()
-                image = io.read_image(image)
-                side = input("Você gostaria de inverter no eixo horizontal ou vertical? (h/v)").lower()
-                result = any
-
-                if side == "h":
-                    result = transformation.flip_image_horizontally(image)
-                elif side == "v":
-                    result = transformation.flip_image_vertically(image)
-                else:
-                    print("Opção invalida.")
-
-                plt.plot_image(result)
-
-            case "8":
-                image = validation.get_image_path()
-                image = io.read_image(image)
-                result = transformation.mirror_image(image)
-
-                plt.plot_image(result)
-
-            case "9":
-                image = validation.get_image_path()
-                image = io.read_image(image)
-                new_height, new_width = input("Digite o novo tamanho que deseja da imagem: (Altura, Largura Ex.: 100, 150) ").split(',')
-                new_height = int(new_height)
-                new_width = int(new_width)
-
-                result = transformation.resize_image(image, new_height, new_width)
-
-                plt.plot_image(result)
-
-            case _:
-                print("Opção invalida. Tente novamente.")
+if __name__ == '__main__':
+    main()
