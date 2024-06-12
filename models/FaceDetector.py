@@ -63,15 +63,3 @@ class FaceDetector:
         elif self.source == 'image':
             self.run_image()
 
-
-def main():
-    # Escolha entre 'webcam' ou 'image'
-    source_type = 'webcam'  # ou 'webcam'
-    image_path = '../images/foto de perfil.jpg'  # Forneça o caminho da imagem se o source_type for 'image'
-
-    face_detector = FaceDetector(source=source_type, image_path=image_path)
-    face_detector.run()
-
-
-if __name__ == "__main__":
-    main()

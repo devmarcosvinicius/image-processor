@@ -1,4 +1,3 @@
-
 import numpy as np
 from skimage.io import imread, imsave
 from PyQt5.QtGui import QPixmap, QImage

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processor</title>
+    <link rel="stylesheet" href="../static/reset.css">
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+
+<main class="image-container">
+    <h2 class="image-container__title">Image Processor</h2>
+
+    <div class="image-container__upload" id="upload">
+        <form id="uploadForm" class="image-container__upload_form" enctype="multipart/form-data">
+            <label for="image" class="image-container__upload_form_label">
+                Carregue a imagem
+                <input type="file" name="image" id="image" class="image-container__upload_form_input"
+                       onchange="uploadImage()">
+            </label>
+        </form>
+    </div>
+
+    <div class="image-container__menu-image">
+        <section class="opcoes">
+            <form id="opcoesForm" enctype="multipart/form-data" onsubmit="applyBrightness(event)">
+                <div class="opcoes__item">
+                    <label for="brightness" class="label opcoes__item__label">Brilho</label>
+                    <input type="range" name="brightness_range" id="brightness" class="opcoes__item__range" min="0.1"
+                           max="2" step="0.1" value="1">
+                </div>
+                <button type="submit">Aplicar</button>
+            </form>
+        </section>
+
+        <canvas id="canvas" class="image-container__canvas"></canvas>
+    </div>
+</main>
+
+<script src="../static/script.js"></script>
+
+</body>
+
+</html>

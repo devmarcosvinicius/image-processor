@@ -88,6 +88,3 @@ class Image:
         adjusted_image = image_float * brightness_level
 
         return exposure.adjust_gamma(adjusted_image, gamma=brightness_level)
-
-def main():
-    image = Image(image_path="../images/foto de perfil.jpg")
