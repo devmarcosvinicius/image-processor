@@ -1,3 +1,4 @@
+import cv2
 from PIL import Image as PIL_Image, ImageEnhance, ImageOps
 import openpyxl
 from openpyxl.styles import PatternFill
@@ -82,10 +83,23 @@ class Image:
         enhancer = ImageEnhance.Brightness(self.image)
         return enhancer.enhance(brightness_level)
 
+    def smooth_image(self, kernel_size=(5, 5), sigma=0):
+        smoothed_image = cv2.GaussianBlur(np.array(self.image), kernel_size, sigma)
+        return PIL_Image.fromarray(smoothed_image)
+
+    def sharpen_image(self):
+        kernel = np.array([[0, -1, 0],
+                           [-1, 5, -1],
+                           [0, -1, 0]])
+
+        sharpened_image = cv2.filter2D(np.array(self.image), -1, kernel)
+        sharpened_image_rgb = cv2.cvtColor(sharpened_image, cv2.COLOR_BGR2RGB)
+        return PIL_Image.fromarray(sharpened_image_rgb)
+
 
 def main():
     image = Image("../images/Reconhecimento_foto de perfil.jpg")
-    image.resize_image(300, 300)
+    image.sharpen_image()
 
 
 if __name__ == "__main__":

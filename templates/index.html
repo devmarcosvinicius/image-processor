@@ -18,10 +18,10 @@
             <li class="font-bold text-white"><a href="{{ url_for('color') }}">Manipulação de Cores</a></li>
             <li class="font-bold text-white"><a href="{{ url_for('transformation') }}">Transformação Geométricas</a>
             </li>
-            <li class="font-bold text-white"><a href="">Filtros e Efeito</a></li>
+            <li class="font-bold text-white"><a href="{{ url_for('filter') }}">Filtros e Efeito</a></li>
             <a href="{{ url_for('home') }}" class="text-white font-bold text-2xl me-8 ml-8">Image Processor</a>
-            <li class="font-bold text-white"><a href="">Restauração</a></li>
-            <li class="font-bold text-white"><a href="">Reconhecimento Facial</a></li>
+            <li class="font-bold text-white"><a href="{{ url_for('restoration') }}">Restauração</a></li>
+            <li class="font-bold text-white"><a href="{{ url_for('face_detection') }}">Reconhecimento Facial</a></li>
             <li class="font-bold text-white"><a href="">Geração de Matriz</a></li>
         </ul>
     </nav>

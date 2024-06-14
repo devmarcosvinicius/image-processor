@@ -15,19 +15,20 @@
 <header class="border-b border-slate-50/10 mb-12">
     <nav class="m-6">
         <ul class="flex gap-6 justify-center items-center">
-                <li class="font-bold text-white"><a href="{{ url_for('color') }}">Manipulação de Cores</a></li>
-                <li class="font-bold text-white"><a href="{{ url_for('transformation') }}">Transformação Geométricas</a></li>
-                <li class="font-bold text-white"><a href="">Filtros e Efeito</a></li>
-                <a href="{{ url_for('home') }}" class="text-white font-bold text-2xl me-8 ml-8">Image Processor</a>
-                <li class="font-bold text-white"><a href="">Restauração</a></li>
-                <li class="font-bold text-white"><a href="">Reconhecimento Facial</a></li>
-                <li class="font-bold text-white"><a href="">Geração de Matriz</a></li>
+            <li class="font-bold text-white"><a href="{{ url_for('color') }}">Manipulação de Cores</a></li>
+            <li class="font-bold text-white"><a href="{{ url_for('transformation') }}">Transformação Geométricas</a>
+            </li>
+            <li class="font-bold text-white"><a href="{{ url_for('filter') }}">Filtros e Efeito</a></li>
+            <a href="{{ url_for('home') }}" class="text-white font-bold text-2xl me-8 ml-8">Image Processor</a>
+            <li class="font-bold text-white"><a href="{{ url_for('restoration') }}">Restauração</a></li>
+            <li class="font-bold text-white"><a href="{{ url_for('face_detection') }}">Reconhecimento Facial</a></li>
+            <li class="font-bold text-white"><a href="">Geração de Matriz</a></li>
         </ul>
     </nav>
 </header>
 
 <main class="main w-full flex flex-col items-center gap-12">
-    <h2 class="main__title text-center font-bold text-[28px]">Transformação Geométricas</h2>
+    <h2 class="main__title text-center font-bold text-[28px]">Filtros e Efeitos</h2>
 
     <div class="main__image-upload" id="upload">
         <form id="uploadForm" class="main__image-upload_form" enctype="multipart/form-data">
@@ -66,6 +67,12 @@
         <canvas id="canvas" class="main__image-container__canvas">
         </canvas>
     </div>
+
+    <button type="submit"
+            class="downloadImage mt-8 bg-green-600 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-12 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto"
+            onclick="downloadImage()">
+        Baixar Imagem
+    </button>
 </main>
 
 <script src="../static/script.js"></script>

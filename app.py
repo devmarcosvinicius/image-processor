@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, send_file
-from PIL import ImageEnhance
 import io
 import base64
 from models.Image import Image
+from models.FaceDetector import FaceDetector
 
 app = Flask(__name__)
 
@@ -20,6 +20,21 @@ def color():
 @app.route('/transformation')
 def transformation():
     return render_template("transformation.html")
+
+
+@app.route('/filter')
+def filter():
+    return render_template("filter.html")
+
+
+@app.route('/restoration')
+def restoration():
+    return render_template("restoration.html")
+
+
+@app.route('/face-detection')
+def face_detection():
+    return render_template("face-detection.html")
 
 
 @app.route("/change_options", methods=["POST"])
@@ -85,5 +100,50 @@ def flip(transform):
     return send_file(image_data, mimetype='image/png')
 
 
+@app.route("/smoothing", methods=["POST"])
+def smoothing():
+    file = request.files['image']
+
+    image = Image(file)
+
+    modified_image = image.smooth_image()
+
+    img_io = io.BytesIO()
+    modified_image.save(img_io, 'PNG')
+    img_io.seek(0)
+
+    return send_file(img_io, mimetype='image/png')
+
+
+@app.route("/restoration", methods=["POST"])
+def reconstruction():
+    file = request.files['image']
+
+    image = Image(file)
+
+    modified_image = image.sharpen_image()
+
+    img_io = io.BytesIO()
+    modified_image.save(img_io, 'PNG')
+    img_io.seek(0)
+
+    return send_file(img_io, mimetype='image/png')
+
+
+@app.route("/face_detector", methods=["POST"])
+def face_detector():
+    file = request.files['image']
+
+    face_detector = FaceDetector("image", file)
+
+    modified_image = face_detector.run()
+
+    img_io = io.BytesIO()
+    modified_image.save(img_io, 'PNG')
+    img_io.seek(0)
+
+    return send_file(img_io, mimetype='image/png')
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
