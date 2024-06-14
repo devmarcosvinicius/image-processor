@@ -1,47 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Processor</title>
     <link rel="stylesheet" href="../static/reset.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../static/style.css">
 </head>
 
 <body>
 
-<main class="image-container">
-    <h2 class="image-container__title">Image Processor</h2>
+<header class="border-b border-slate-50/10 mb-12">
+    <nav class="m-6">
+        <ul class="flex gap-6 justify-center items-center">
+            <li class="font-bold text-white"><a href="{{ url_for('color') }}">Manipulação de Cores</a></li>
+            <li class="font-bold text-white"><a href="{{ url_for('transformation') }}">Transformação Geométricas</a>
+            </li>
+            <li class="font-bold text-white"><a href="">Filtros e Efeito</a></li>
+            <a href="{{ url_for('home') }}" class="text-white font-bold text-2xl me-8 ml-8">Image Processor</a>
+            <li class="font-bold text-white"><a href="">Restauração</a></li>
+            <li class="font-bold text-white"><a href="">Reconhecimento Facial</a></li>
+            <li class="font-bold text-white"><a href="">Geração de Matriz</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <div class="image-container__upload" id="upload">
-        <form id="uploadForm" class="image-container__upload_form" enctype="multipart/form-data">
-            <label for="image" class="image-container__upload_form_label">
-                Carregue a imagem
-                <input type="file" name="image" id="image" class="image-container__upload_form_input"
-                       onchange="uploadImage()">
-            </label>
-        </form>
-    </div>
-
-    <div class="image-container__menu-image">
-        <section class="opcoes">
-            <form id="opcoesForm" enctype="multipart/form-data" onsubmit="applyBrightness(event)">
-                <div class="opcoes__item">
-                    <label for="brightness" class="label opcoes__item__label">Brilho</label>
-                    <input type="range" name="brightness_range" id="brightness" class="opcoes__item__range" min="0.1"
-                           max="2" step="0.1" value="1">
-                </div>
-                <button type="submit">Aplicar</button>
-            </form>
-        </section>
-
-        <canvas id="canvas" class="image-container__canvas"></canvas>
-    </div>
+<main class="main w-full flex flex-col items-center gap-12">
 </main>
 
-<script src="../static/script.js"></script>
-
 </body>
-
 </html>

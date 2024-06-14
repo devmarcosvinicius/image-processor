@@ -1,14 +1,12 @@
-from PIL import Image as PILImage
+from PIL import Image as PIL_Image, ImageEnhance, ImageOps
 import openpyxl
 from openpyxl.styles import PatternFill
 import numpy as np
-from skimage.transform import resize as sk_resize, rescale as sk_rescale
-from skimage import exposure, util
 
 
 class Image:
-    def __init__(self, image_path):
-        self.image = PILImage.open(image_path)
+    def __init__(self, file):
+        self.image = PIL_Image.open(file)
 
     def get_image_colors(self):
         width, height = self.image.size
@@ -62,29 +60,33 @@ class Image:
         wb.save(output_path)
 
     def rescale_image(self, proportion):
-        return sk_rescale(np.array(self.image), proportion)
+        return self.image.resize(self.image.height * proportion, self.image.width * proportion)
 
     def resize_image(self, new_height, new_width):
-        return np.array(sk_resize(np.array(self.image), (new_height, new_width), anti_aliasing=True))
+        return self.image.resize((new_width, new_height), PIL_Image.Resampling.LANCZOS)
 
-    def flip_image_horizontally(self):
-        return np.array(np.array(self.image)[:, ::-1, ...])
-
-    def flip_image_vertically(self):
-        return np.array(np.array(self.image)[::-1, :, ...])
+    def flip(self):
+        return ImageOps.flip(self.image)
 
     def mirror_image(self):
-        flipped_image = self.flip_image_horizontally()
-        return np.hstack([np.array(self.image), flipped_image])
+        return ImageOps.mirror(self.image)
 
     def move_image(self):
         pass
 
     def change_contrast(self, contrast_level):
-        return exposure.adjust_gamma(np.array(self.image), gamma=contrast_level)
+        enhancer = ImageEnhance.Contrast(self.image)
+        return enhancer.enhance(contrast_level)
 
     def change_brightness(self, brightness_level):
-        image_float = util.img_as_float(np.array(self.image))
-        adjusted_image = image_float * brightness_level
+        enhancer = ImageEnhance.Brightness(self.image)
+        return enhancer.enhance(brightness_level)
 
-        return exposure.adjust_gamma(adjusted_image, gamma=brightness_level)
+
+def main():
+    image = Image("../images/Reconhecimento_foto de perfil.jpg")
+    image.resize_image(300, 300)
+
+
+if __name__ == "__main__":
+    main()
