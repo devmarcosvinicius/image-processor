@@ -28,44 +28,32 @@
 </header>
 
 <main class="main w-full flex flex-col items-center gap-12">
-    <h2 class="main__title text-center font-bold text-[28px]">Manipulação de Cores</h2>
+    <h2 class="main__title text-center font-bold text-[28px]">Transformação Geométricas</h2>
 
     <div class="main__image-upload" id="upload">
         <form id="uploadForm" class="main__image-upload_form" enctype="multipart/form-data">
             <label for="image" class="main__image-upload_form_label">
                 Carregue a imagem
-                <input type="file" name="image" id="image" class="main__image-upload_form_input">
+                <input type="file" name="image" id="image" class="main__image-upload_form_input"
+                       onchange="uploadImage()">
             </label>
         </form>
     </div>
 
-    <div class="main__image-container flex gap-12">
-        <div class="container main__options">
-            <section class="opcoes">
-                <form id="opcoesForm" class="flex flex-col w-full gap-2" enctype="multipart/form-data"
-                      onsubmit="applyColorsManipulation(event)">
-                    <div class="opcoes__item flex flex-col">
-                        <label for="brightness" class="label opcoes__item__label">Brilho</label>
-                        <input type="range" name="brightness_range" id="brightness"
-                               class="opcoes__item__range w-[600px]"
-                               min="0.1" max="2" step="0.1" value="1">
-                    </div>
-
-                    <div class="opcoes__item flex flex-col">
-                        <label for="contrast" class="label opcoes__item__label">Contraste</label>
-                        <input type="range" name="contrast_range" id="contrast" class="opcoes__item__range"
-                               min="0.1" max="2" step="0.1" value="1">
-                    </div>
-                    <button type="submit"
-                            class="mt-8 bg-sky-500 hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-12 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto">
-                        Aplicar
-                    </button>
-                </form>
-            </section>
-        </div>
-
+    <div class="main__image-container flex flex-col gap-6">
         <canvas id="canvas" class="main__image-container__canvas">
         </canvas>
+
+        <div class="container main__options flex justify-center gap-6">
+            <button type="button"
+                    class="mt-8 bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-12 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 hover:bg-sky-400"
+                    onclick="applySmoothing()">Aplicar Suavização
+            </button>
+            <button type="button"
+                    class="mt-8 bg-white-900 text-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-12 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto dark:bg-sky-500"
+                    onclick="applyRestoration()">Aplicar Restauração
+            </button>
+        </div>
     </div>
 
     <button type="submit"
