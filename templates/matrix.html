@@ -28,7 +28,7 @@
 </header>
 
 <main class="main w-full flex flex-col items-center gap-12">
-    <h2 class="main__title text-center font-bold text-[28px]">Reconhecimento Facial</h2>
+    <h2 class="main__title text-center font-bold text-[28px]">Transformação Geométricas</h2>
 
     <div class="main__image-upload" id="upload">
         <form id="uploadForm" class="main__image-upload_form" enctype="multipart/form-data">
@@ -40,23 +40,18 @@
         </form>
     </div>
 
-    <div class="main__get-webcam" id="webcam">
-        <a href="#" class="flex flex-col text-center">
-            <span>ou</span>
-            <span>Use uma webcam</span>
-        </a>
-    </div>
-
     <div class="main__image-container flex flex-col gap-6">
-        <video id="video" autoplay></video>
         <canvas id="canvas" class="main__image-container__canvas">
         </canvas>
 
         <div class="container main__options flex justify-center gap-6">
             <button type="button"
                     class="mt-8 bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-12 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 hover:bg-sky-400"
-                    onclick="sendImageForFaceDetection()"
-            >Aplicar Reconhecimento Facial
+                    onclick="downloadMatrix()">Gerar Matriz
+            </button>
+            <button type="button"
+                    class="mt-8 bg-white-900 text-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-12 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto dark:bg-sky-500"
+                    onclick="getColors()">Gerar Cores
             </button>
         </div>
     </div>
