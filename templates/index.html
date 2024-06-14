@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processor</title>
+    <link rel="stylesheet" href="../static/reset.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+
+<header class="border-b border-slate-50/10 mb-12">
+    <nav class="m-6">
+        <ul class="flex gap-6 justify-center items-center">
+            <li class="font-bold text-white"><a href="{{ url_for('color') }}">Manipulação de Cores</a></li>
+            <li class="font-bold text-white"><a href="{{ url_for('transformation') }}">Transformação Geométricas</a>
+            </li>
+            <li class="font-bold text-white"><a href="">Filtros e Efeito</a></li>
+            <a href="{{ url_for('home') }}" class="text-white font-bold text-2xl me-8 ml-8">Image Processor</a>
+            <li class="font-bold text-white"><a href="">Restauração</a></li>
+            <li class="font-bold text-white"><a href="">Reconhecimento Facial</a></li>
+            <li class="font-bold text-white"><a href="">Geração de Matriz</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="main w-full flex flex-col items-center gap-12">
+</main>
+
+</body>
+</html>

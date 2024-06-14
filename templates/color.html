@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processor</title>
+    <link rel="stylesheet" href="../static/reset.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+
+<header class="border-b border-slate-50/10 mb-12">
+    <nav class="m-6">
+        <ul class="flex gap-6 justify-center items-center">
+            <li class="font-bold text-white"><a href="{{ url_for('color') }}">Manipulação de Cores</a></li>
+            <li class="font-bold text-white"><a href="{{ url_for('transformation') }}">Transformação Geométricas</a>
+            </li>
+            <li class="font-bold text-white"><a href="">Filtros e Efeito</a></li>
+            <a href="{{ url_for('home') }}" class="text-white font-bold text-2xl me-8 ml-8">Image Processor</a>
+            <li class="font-bold text-white"><a href="">Restauração</a></li>
+            <li class="font-bold text-white"><a href="">Reconhecimento Facial</a></li>
+            <li class="font-bold text-white"><a href="">Geração de Matriz</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="main w-full flex flex-col items-center gap-12">
+    <h2 class="main__title text-center font-bold text-[28px]">Manipulação de Cores</h2>
+
+    <div class="main__image-upload" id="upload">
+        <form id="uploadForm" class="main__image-upload_form" enctype="multipart/form-data">
+            <label for="image" class="main__image-upload_form_label">
+                Carregue a imagem
+                <input type="file" name="image" id="image" class="main__image-upload_form_input"
+                       onchange="uploadImage()">
+            </label>
+        </form>
+    </div>
+
+    <div class="main__image-container flex gap-12">
+        <div class="container main__options">
+            <section class="opcoes">
+                <form id="opcoesForm" class="flex flex-col w-full gap-2" enctype="multipart/form-data"
+                      onsubmit="applyColorsManipulation(event)">
+                    <div class="opcoes__item flex flex-col">
+                        <label for="brightness" class="label opcoes__item__label">Brilho</label>
+                        <input type="range" name="brightness_range" id="brightness"
+                               class="opcoes__item__range w-[600px]"
+                               min="0.1" max="2" step="0.1" value="1">
+                    </div>
+
+                    <div class="opcoes__item flex flex-col">
+                        <label for="contrast" class="label opcoes__item__label">Contraste</label>
+                        <input type="range" name="contrast_range" id="contrast" class="opcoes__item__range"
+                               min="0.1" max="2" step="0.1" value="1">
+                    </div>
+                    <button type="submit"
+                            class="mt-8 bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-12 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400">
+                        Aplicar
+                    </button>
+                </form>
+            </section>
+        </div>
+
+        <canvas id="canvas" class="main__image-container__canvas">
+        </canvas>
+    </div>
+</main>
+
+<script src="../static/script.js"></script>
+
+</body>
+
+</html>
