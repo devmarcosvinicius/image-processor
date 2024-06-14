@@ -3,6 +3,7 @@ from PIL import Image as PIL_Image, ImageEnhance, ImageOps
 import openpyxl
 from openpyxl.styles import PatternFill
 import numpy as np
+import io
 
 
 class Image:
@@ -37,7 +38,7 @@ class Image:
 
         return colors_with_coordinates
 
-    def write_image_in_excel(self, output_path, coordinates=False):
+    def write_image_in_excel(self, coordinates=False):
         image = self.image.convert('RGBA')
         width, height = image.size
 
@@ -58,7 +59,12 @@ class Image:
                 if coordinates:
                     ws.cell(row=y + 1, column=x + 1).value = f"{x},{y}"
 
-        wb.save(output_path)
+        # Cria um buffer em memória
+        buffer = io.BytesIO()
+        wb.save(buffer)
+        buffer.seek(0)  # Reposiciona o cursor no início do buffer
+
+        return buffer
 
     def rescale_image(self, proportion):
         return self.image.resize(self.image.height * proportion, self.image.width * proportion)
@@ -74,6 +80,9 @@ class Image:
 
     def move_image(self):
         pass
+
+    def rotate_image(self, value):
+        return self.image.rotate(value, expand=True)
 
     def change_contrast(self, contrast_level):
         enhancer = ImageEnhance.Contrast(self.image)

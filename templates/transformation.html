@@ -22,7 +22,7 @@
             <a href="{{ url_for('home') }}" class="text-white font-bold text-2xl me-8 ml-8">Image Processor</a>
             <li class="font-bold text-white"><a href="{{ url_for('restoration') }}">Restauração</a></li>
             <li class="font-bold text-white"><a href="{{ url_for('face_detection') }}">Reconhecimento Facial</a></li>
-            <li class="font-bold text-white"><a href="">Geração de Matriz</a></li>
+            <li class="font-bold text-white"><a href="{{ url_for('matrix') }}">Geração de Matriz</a></li>
         </ul>
     </nav>
 </header>
@@ -61,21 +61,30 @@
                         <label class="label opcoes__item__label">Espelhar</label>
 
                         <div class="icones">
-                            <button type="button" class="icon" onclick="applyFlip('original')">Original
+                            <button type="button" class="icon" onclick="applyFlip('horizontal')">
+                                <svg width="25px" height="25px" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00024000000000000003" transform="rotate(90)matrix(-1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M6.44721 2.10557C6.13723 1.95058 5.76909 1.96714 5.47427 2.14935C5.17945 2.33156 5 2.65342 5 3V10C5 10.5523 5.44772 11 6 11H20C20.4638 11 20.8667 10.6811 20.9732 10.2298C21.0798 9.77838 20.862 9.31298 20.4472 9.10557L6.44721 2.10557ZM7 9V4.61804L15.7639 9H7ZM5 14C5 13.4477 5.44772 13 6 13H20C20.4638 13 20.8667 13.3189 20.9732 13.7702C21.0798 14.2216 20.862 14.687 20.4472 14.8944L6.44721 21.8944C6.13723 22.0494 5.76909 22.0329 5.47427 21.8507C5.17945 21.6684 5 21.3466 5 21V14Z" fill="#18a5e5"></path> </g></svg>
                             </button>
-                            <button type="button" class="icon" onclick="applyFlip('horizontal')">Horizontal
-                            </button>
-                            <button type="button" class="icon" onclick="applyFlip('vertical')">Vertical
-                            </button>
-                            <button type="button" class="icon" onclick="applyFlip('horizontal-vertical')">
-                                Horizontal-Vertical
+                            <button type="button" class="icon" onclick="applyFlip('vertical')">
+                                <svg width="25px" height="25px" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00024000000000000003" transform="rotate(90)matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M6.44721 2.10557C6.13723 1.95058 5.76909 1.96714 5.47427 2.14935C5.17945 2.33156 5 2.65342 5 3V10C5 10.5523 5.44772 11 6 11H20C20.4638 11 20.8667 10.6811 20.9732 10.2298C21.0798 9.77838 20.862 9.31298 20.4472 9.10557L6.44721 2.10557ZM7 9V4.61804L15.7639 9H7ZM5 14C5 13.4477 5.44772 13 6 13H20C20.4638 13 20.8667 13.3189 20.9732 13.7702C21.0798 14.2216 20.862 14.687 20.4472 14.8944L6.44721 21.8944C6.13723 22.0494 5.76909 22.0329 5.47427 21.8507C5.17945 21.6684 5 21.3466 5 21V14Z" fill="#18a5e5"></path> </g></svg>
                             </button>
                         </div>
 
                     </div>
 
                     <div class="opcoes__item flex gap-6">
-                        <label for="rotation" class="label opcoes__item__label">Rotação</label>
+                        <label class="label opcoes__item__label">Rotação</label>
+                        <button type="button" class="icon" onclick="applyRotation1()">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve" width="25px" height="25px" fill="#18a5e5" transform="matrix(1, 0, 0, 1, 0, 0)rotate(90)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.32"></g><g id="SVGRepo_iconCarrier"> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" d="M10.7,5.2c-4,2-6.7,6-6.7,10.8c0,6.6,5.4,12,12,12 s12-5.4,12-12"></path> <g> <g> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" d="M28,16c0-0.3,0-0.7,0-1"></path> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="1.8716,1.8716" d="M27.7,13.2 c-1.1-4.6-5-8.2-9.7-9"></path> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" d="M17,4c-0.3,0-0.7,0-1,0"></path> </g> </g> <polyline fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" points="11,12 11,5 4,5 "></polyline> </g></svg>
+                        </button>
+                        <button type="button"class="icon" onclick="applyRotation2()">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve" width="25px" height="25px" fill="#18a5e5" transform="matrix(1, 0, 0, 1, 0, 0)rotate(90)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.32"></g><g id="SVGRepo_iconCarrier"> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" d="M10.7,5.2c-4,2-6.7,6-6.7,10.8c0,6.6,5.4,12,12,12 s12-5.4,12-12"></path> <g> <g> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" d="M28,16c0-0.3,0-0.7,0-1"></path> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="1.8716,1.8716" d="M27.7,13.2 c-1.1-4.6-5-8.2-9.7-9"></path> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" d="M17,4c-0.3,0-0.7,0-1,0"></path> </g> </g> <polyline fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" points="11,12 11,5 4,5 "></polyline> </g></svg>
+                        </button>
+                        <button type="button" class="icon" onclick="applyRotation3()">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve" width="25px" height="25px" fill="#18a5e5" transform="matrix(1, 0, 0, 1, 0, 0)rotate(90)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.32"></g><g id="SVGRepo_iconCarrier"> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" d="M10.7,5.2c-4,2-6.7,6-6.7,10.8c0,6.6,5.4,12,12,12 s12-5.4,12-12"></path> <g> <g> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" d="M28,16c0-0.3,0-0.7,0-1"></path> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="1.8716,1.8716" d="M27.7,13.2 c-1.1-4.6-5-8.2-9.7-9"></path> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" d="M17,4c-0.3,0-0.7,0-1,0"></path> </g> </g> <polyline fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" points="11,12 11,5 4,5 "></polyline> </g></svg>
+                        </button>
+                        <button type="button" class="icon" onclick="applyRotation4()">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve" width="25px" height="25px" fill="#18a5e5" transform="matrix(1, 0, 0, 1, 0, 0)rotate(90)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.32"></g><g id="SVGRepo_iconCarrier"> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" d="M10.7,5.2c-4,2-6.7,6-6.7,10.8c0,6.6,5.4,12,12,12 s12-5.4,12-12"></path> <g> <g> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" d="M28,16c0-0.3,0-0.7,0-1"></path> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="1.8716,1.8716" d="M27.7,13.2 c-1.1-4.6-5-8.2-9.7-9"></path> <path fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" d="M17,4c-0.3,0-0.7,0-1,0"></path> </g> </g> <polyline fill="none" stroke="#18a5e5" stroke-width="2" stroke-miterlimit="10" points="11,12 11,5 4,5 "></polyline> </g></svg>
+                        </button>
                     </div>
 
                     <button type="submit"

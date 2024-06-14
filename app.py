@@ -37,6 +37,11 @@ def face_detection():
     return render_template("face-detection.html")
 
 
+@app.route('/matrix')
+def matrix():
+    return render_template("matrix.html")
+
+
 @app.route("/change_options", methods=["POST"])
 def change_options():
     file = request.files['image']
@@ -100,6 +105,66 @@ def flip(transform):
     return send_file(image_data, mimetype='image/png')
 
 
+@app.route("/rotate1", methods=["POST"])
+def rotate1():
+    file = request.files['image']
+
+    image = Image(file)
+
+    modified_image = image.rotate_image(45)
+
+    img_io = io.BytesIO()
+    modified_image.save(img_io, 'PNG')
+    img_io.seek(0)
+
+    return send_file(img_io, mimetype='image/png')
+
+
+@app.route("/rotate2", methods=["POST"])
+def rotate2():
+    file = request.files['image']
+
+    image = Image(file)
+
+    modified_image = image.rotate_image(90)
+
+    img_io = io.BytesIO()
+    modified_image.save(img_io, 'PNG')
+    img_io.seek(0)
+
+    return send_file(img_io, mimetype='image/png')
+
+
+@app.route("/rotate3", methods=["POST"])
+def rotate3():
+    file = request.files['image']
+
+    image = Image(file)
+
+    modified_image = image.rotate_image(180)
+
+    img_io = io.BytesIO()
+    modified_image.save(img_io, 'PNG')
+    img_io.seek(0)
+
+    return send_file(img_io, mimetype='image/png')
+
+
+@app.route("/rotate4", methods=["POST"])
+def rotate4():
+    file = request.files['image']
+
+    image = Image(file)
+
+    modified_image = image.rotate_image(360)
+
+    img_io = io.BytesIO()
+    modified_image.save(img_io, 'PNG')
+    img_io.seek(0)
+
+    return send_file(img_io, mimetype='image/png')
+
+
 @app.route("/smoothing", methods=["POST"])
 def smoothing():
     file = request.files['image']
@@ -143,6 +208,21 @@ def face_detector():
     img_io.seek(0)
 
     return send_file(img_io, mimetype='image/png')
+
+
+@app.route("/get_matrix", methods=["POST"])
+def get_matrix():
+    file = request.files['image']
+    image = Image(file)
+    excel_buffer = image.write_image_in_excel()
+
+    # Retornar o arquivo Excel como uma resposta HTTP
+    return send_file(
+        excel_buffer,
+        as_attachment=True,
+        download_name='image_matrix.xlsx',
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
 
 
 if __name__ == '__main__':

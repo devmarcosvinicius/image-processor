@@ -241,3 +241,149 @@ function sendImageForFaceDetection() {
     })
     .catch(error => console.error('Erro ao aplicar a detecção facial:', error));
 }
+
+function applyRotation1() {
+    const imageFile = document.getElementById('image').files[0];
+    if (!imageFile) {
+        alert('Por favor, carregue uma imagem primeiro.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    fetch('/rotate1', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const imageUrl = URL.createObjectURL(blob);
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+        }
+        img.src = imageUrl;
+    })
+    .catch(error => console.error('Erro ao aplicar a rotação:', error));
+}
+
+function applyRotation2() {
+    const imageFile = document.getElementById('image').files[0];
+    if (!imageFile) {
+        alert('Por favor, carregue uma imagem primeiro.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    fetch('/rotate2', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const imageUrl = URL.createObjectURL(blob);
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+        }
+        img.src = imageUrl;
+    })
+    .catch(error => console.error('Erro ao aplicar a rotação:', error));
+}
+
+function applyRotation3() {
+    const imageFile = document.getElementById('image').files[0];
+    if (!imageFile) {
+        alert('Por favor, carregue uma imagem primeiro.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    fetch('/rotate3', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const imageUrl = URL.createObjectURL(blob);
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+        }
+        img.src = imageUrl;
+    })
+    .catch(error => console.error('Erro ao aplicar a rotação:', error));
+}
+
+function applyRotation4() {
+    const imageFile = document.getElementById('image').files[0];
+    if (!imageFile) {
+        alert('Por favor, carregue uma imagem primeiro.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    fetch('/rotate4', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const imageUrl = URL.createObjectURL(blob);
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+        }
+        img.src = imageUrl;
+    })
+    .catch(error => console.error('Erro ao aplicar a rotação:', error));
+}
+
+function downloadMatrix() {
+    fetch('/get_matrix', {
+        method: 'GET'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao gerar a matriz.');
+        }
+        return response.blob();
+    })
+    .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'matrix.xlsx';  // Nome do arquivo que será baixado
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Ocorreu um erro ao gerar a matriz.');
+    });
+}
